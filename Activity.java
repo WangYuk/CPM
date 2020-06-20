@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Activity {
     private int earlyStart;
@@ -11,6 +10,8 @@ public class Activity {
     private int lateStart;
     private boolean isStart = false;
     private boolean isEnd = false;
+    private boolean earlyCalculated = false;
+    private boolean lateCalculated = false;
     private String name;
     private ArrayList<Relation> preRelations = new ArrayList<>();
     private ArrayList<Relation> sucRelations = new ArrayList<>();
@@ -38,6 +39,7 @@ public class Activity {
         if (isStart) {
             earlyStart = 0;
             earlyFinish = earlyStart + duration;
+            earlyCalculated = true;
             return;
         }
         int max = Integer.MIN_VALUE;
@@ -48,12 +50,14 @@ public class Activity {
         }
         earlyStart = max;
         earlyFinish = earlyStart + duration;
+        earlyCalculated = true;
     }
 
     public void calLate() {
         if (isEnd) {
             lateFinish = earlyFinish;
             lateStart = earlyStart;
+            lateCalculated = true;
             return;
         }
         int min = Integer.MAX_VALUE;
@@ -64,6 +68,7 @@ public class Activity {
         }
         lateFinish = min;
         lateStart = lateFinish - duration;
+        lateCalculated = true;
     }
 
     public void calFloat() {
@@ -147,5 +152,33 @@ public class Activity {
         System.out.println("name:  " + name + "   DU: " + duration);
         System.out.println("LS: " + lateStart + "  FF:" + freeFloat + "  LF:" + lateFinish);
         System.out.println("---------------------------------");
+    }
+
+    public boolean isEarlyCalculated() {
+        return earlyCalculated;
+    }
+
+    public boolean isLateCalculated() {
+        return lateCalculated;
+    }
+
+    public boolean isSucLateCalculated() {
+        for (Relation rel:sucRelations
+             ) {
+            if (!rel.getTo().isLateCalculated()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isPreEarlyCalculated() {
+        for (Relation rel:preRelations
+        ) {
+            if (!rel.getFrom().isEarlyCalculated()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -42,7 +42,7 @@ public class AON {
             toCal.calEarly();
             for (Relation relation:toCal.getSucRelations()
                  ) {
-                if (!visited.contains(relation.getTo())) {
+                if (!visited.contains(relation.getTo()) && relation.getTo().isPreEarlyCalculated()) {
                     nextAct.add(relation.getTo());
                     visited.add(relation.getTo());
                 }
@@ -60,7 +60,7 @@ public class AON {
             toCal.calLate();
             for (Relation relation:toCal.getPreRelations()
             ) {
-                if (!visited.contains(relation.getFrom())) {
+                if (!visited.contains(relation.getFrom()) && relation.getFrom().isSucLateCalculated()) {
                     nextAct.add(relation.getFrom());
                     visited.add(relation.getFrom());
                 }
