@@ -5,19 +5,16 @@ class NetPresentValue:
     net_cash_flow = []
     income_rate = 0
     year = 0
-    net_present_value = 0
 
     def __init__(self,status):
         self.input_paras(status)
+        self.net_present_value = 0
 
     def input_paras(self,status):
-        if (status == 1):
-            print("请输入收益率：")
-            self.income_rate = float(input())
-        print("请输入寿命期：")
-        self.year = int(input())
-        print("请在一行内输入各年净现金流，以空格分隔：")
-        self.net_cash_flow = input().split()
+        if status == 1:
+            self.income_rate = float(input("请输入收益率："))
+        self.year = int(input("请输入寿命期："))
+        self.net_cash_flow = input("请在一行内输入各年净现金流，以空格分隔：").split()
 
     def calculate(self):
         net_cash_flow = []
@@ -65,10 +62,8 @@ class NetPresentValue:
         i1 = 0
         i2 = 1
         if is_diy:
-            print("请输入开始的下界：")
-            i1 = float(input())
-            print("请输入开始的上界：")
-            i2 = float(input())
+            i1 = float(input("请输入开始的下界："))
+            i2 = float(input("请输入开始的上界："))
         while i2 - i1 >= 0.02:
             i3 = (i1 + i2) / 2
             npv1 = self.cal_tmp_npv(i1)
